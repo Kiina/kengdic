@@ -19,8 +19,8 @@ kengdic
     :alt: GitHub stars
 
 kengdic is a large Korean/English dictionary database created by Joe
-Speigle. It was originally hosted at <ezkorean.com>, and was made
-available by Garfield Nate (<https://github.com/garfieldnate/kengdic>)
+Speigle. It was originally hosted at ezkorean.com, and was made
+available by Garfield Nate <https://github.com/garfieldnate/kengdic>
 because it was no longer available anywhere else. This implementation
 provides serverless access via a convenient SQLite API. The dictionary is
 released under MPL 2.0.
@@ -28,7 +28,7 @@ released under MPL 2.0.
 Details
 -------
 
-From Garfield Nate (<https://github.com/garfieldnate>):
+From Garfield Nate <https://github.com/garfieldnate>:
 
 "I found a note from Joe Speigle at http://www.perapera.org/korean/
 last year (2013):
