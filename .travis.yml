@@ -9,6 +9,7 @@
   sudo: required
 
   script:
+    - cd python
     - pip install -U .[test]
     - python setup.py test
 
