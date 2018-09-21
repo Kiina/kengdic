@@ -43,7 +43,7 @@ last year (2013):
     I made it, people. I'm not into reduplicating the wheel as they
     say. I have spent thousands of hours on this project. was it worth
     it? ... Anybody can contact me about this, I am extremely willing
-    to     share all knowledge I have about it. My email address is at
+    to share all knowledge I have about it. My email address is at
     the bottom of the page for ezcorean.com
 
 Unfortunately, it was my sad finding that Joe Speigle passed away last
