@@ -26,7 +26,7 @@ kengdic_fields = ['word_id', 'korean', 'synonym', 'english',
 
 def import_tsv():
     data = pd.read_csv(origin, sep="\t", index_col=None,
-                       header=None, low_memory=False)
+                       header=None, low_memory=False, encoding='utf8')
     data.columns = kengdic_fields
     with sqlite3.connect(dest) as conn:
         c = conn.cursor()
@@ -47,3 +47,7 @@ def import_tsv():
         count = next(c.execute("select count(word_id) from kengdic;"))[0]
         print("imported {} words".format(count))
         conn.commit()
+
+
+if __name__ == "__main__":
+    import_tsv()
