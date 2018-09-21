@@ -13,14 +13,8 @@ def test_kengdic():
     assert str(result[0]) == ('Korean: 매만져  가지런히하다\nEnglish: do\nSynonym: None'
                               '\nPart of Speech: 1.0 (1)\nSubmitted: engdic '
                               '(2006-01-16 00:52:46)')
-    assert repr(result[0]) == ("<class 'kengdic.kengdic.KengdicResult'>:\n"
-                               "{'word_id': 53245, 'korean': '매만져  가지런히하다', "
-                               "'synonym': None, 'english': 'do', "
-                               "'part_of_speech_number': 1.0, "
-                               "'part_of_speech': '1', 'submitter': 'engdic', "
-                               "'date_of_entry': '2006-01-16 00:52:46', "
-                               "'word_size': 29.0, 'hanja': None, "
-                               "'word_id2': 53245, 'extra_data': 't'}")
+    assert str(type(result[0])) in repr(result[0])
+    assert repr(dict(result[0])) in repr(result[0])
     assert result[0].word_id == 53245
     assert result[0].word_id2 == 53245
     assert result[0].word_size == 29.0
