@@ -99,7 +99,8 @@ class Kengdic(object):
         return conn
 
     def __init__(self):
-        pass
+        self._last_search = None
+        self._last_result = None
 
     @property
     def _conn(self):
@@ -129,6 +130,10 @@ class Kengdic(object):
         result : list
             List of `KengdicResult`s, one for each match
         """
+        if self._last_search == (match_clause, search_terms):
+            return self._last_result
+        else:
+            self._last_search = match_clause, search_terms
         where_clause = []
         for key, value in search_terms.items():
             where_clause.append("{} {} '{}'".format(key, match_clause, value))
@@ -136,7 +141,8 @@ class Kengdic(object):
             where_clause = " where " + " and ".join(where_clause)
         result = list(self._cursor.execute(
             'select * from kengdic' + where_clause))
-        return [KengdicResult(r) for r in result]
+        self._last_result = [KengdicResult(r) for r in result]
+        return self._last_result
 
     def search(self, **search_terms):
         """Search the dictionary for an exact match
