@@ -1,6 +1,7 @@
 import sqlite3
 import atexit
 import re
+import os
 import pkg_resources
 
 
@@ -65,8 +66,12 @@ class Kengdic(object):
     kind enough to copy it for me, and so now I am able to provide it here."
     """
 
-    __sqlite_path = pkg_resources.resource_filename(
-        "kengdic", "sqlite/kengdic_2011.sqlite")
+    try:
+        __sqlite_path = pkg_resources.resource_filename(
+            "kengdic", os.path.join("sqlite", "kengdic_2011.sqlite"))
+    except ModuleNotFoundError:
+        __sqlite_path = os.path.join(os.path.dirname(__file__),
+                                     "sqlite", "kengdic_2011.sqlite")
 
     @classmethod
     def load_sqlite(cls, mode='ro', **kwargs):
