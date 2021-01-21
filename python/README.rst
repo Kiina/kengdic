@@ -80,7 +80,7 @@ You can search for exact text matches in any of the dictionary fields: `korean`,
     [<class 'kengdic.kengdic.KengdicResult'>:
     {'word_id': 209320, 'korean': '일월', 'synonym': None, 'english': 'January', 'part_of_speech_number': 1.0, 'part_of_speech': '1', 'submitter': 'joe', 'date_of_entry': '2009-01-01 11:23:14', 'word_size': 6.0, 'hanja': '一月', 'word_id2': 201725, 'extra_data': 'mtA'}]
 
-Kengdic also supports three partial match functions: 
+Kengdic also supports three partial match functions:
 * `search_like`: SQL LIKE function
 * `search_glob`: Unix glob matching
 * `search_regex`: Python regular expressions

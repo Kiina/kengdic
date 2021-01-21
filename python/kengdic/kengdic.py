@@ -68,13 +68,15 @@ class Kengdic(object):
 
     try:
         __sqlite_path = pkg_resources.resource_filename(
-            "kengdic", os.path.join("sqlite", "kengdic_2011.sqlite"))
+            "kengdic", os.path.join("sqlite", "kengdic_2011.sqlite")
+        )
     except ModuleNotFoundError:
-        __sqlite_path = os.path.join(os.path.dirname(__file__),
-                                     "sqlite", "kengdic_2011.sqlite")
+        __sqlite_path = os.path.join(
+            os.path.dirname(__file__), "sqlite", "kengdic_2011.sqlite"
+        )
 
     @classmethod
-    def load_sqlite(cls, mode='ro', **kwargs):
+    def load_sqlite(cls, mode="ro", **kwargs):
         """Load the kengdic database SQLite connection
 
         Use of this method is only advised if you are an experienced SQL user.
@@ -95,7 +97,7 @@ class Kengdic(object):
         conn : sqlite3.Connection
             Connection to the kengdic database
         """
-        assert mode in ['ro', 'rw', 'rwc', 'memory']
+        assert mode in ["ro", "rw", "rwc", "memory"]
         uri = "file:{}?mode={}".format(cls.__sqlite_path, mode)
         for key, value in kwargs.items():
             uri = uri + "&{}={}".format(key, value)
@@ -139,18 +141,20 @@ class Kengdic(object):
             return self._last_result
         else:
             self._last_search = match_clause, search_terms
-        where_clause = []
+        where_clause = list()
+        where_values = list()
         for key, value in search_terms.items():
-            where_clause.append("{} {} '{}'".format(key, match_clause, value))
+            where_clause.append("{} {} ?".format(key, match_clause))
+            where_values.append(value)
         if where_clause != "":
             where_clause = " where " + " and ".join(where_clause)
-        result = list(self._cursor.execute(
-            'select * from kengdic' + where_clause))
+        statement = "select * from kengdic" + where_clause
+        result = list(self._cursor.execute(statement, tuple(where_values)))
         self._last_result = [KengdicResult(r) for r in result]
         return self._last_result
 
     def search(self, **search_terms):
-        """Search the dictionary for an exact match
+        """Search the dictionary for an exact match.
 
         Parameters
         ----------
@@ -350,10 +354,20 @@ class KengdicResult(dict):
         Additional information included in the dictionary entry
     """
 
-    __fields = ['word_id', 'korean', 'synonym', 'english',
-                'part_of_speech_number', 'part_of_speech',
-                'submitter', 'date_of_entry', 'word_size',
-                'hanja', 'word_id2', 'extra_data']
+    __fields = [
+        "word_id",
+        "korean",
+        "synonym",
+        "english",
+        "part_of_speech_number",
+        "part_of_speech",
+        "submitter",
+        "date_of_entry",
+        "word_size",
+        "hanja",
+        "word_id2",
+        "extra_data",
+    ]
 
     def __init__(self, query_result):
         assert len(query_result) == len(self.__fields)
@@ -362,64 +376,70 @@ class KengdicResult(dict):
 
     @property
     def english(self):
-        return self['english']
+        return self["english"]
 
     @property
     def korean(self):
-        return self['korean']
+        return self["korean"]
 
     @property
     def hanja(self):
-        return self['hanja']
+        return self["hanja"]
 
     @property
     def synonym(self):
-        return self['synonym']
+        return self["synonym"]
 
     @property
     def part_of_speech_number(self):
-        return self['part_of_speech_number']
+        return self["part_of_speech_number"]
 
     @property
     def part_of_speech(self):
-        return self['part_of_speech']
+        return self["part_of_speech"]
 
     @property
     def submitter(self):
-        return self['submitter']
+        return self["submitter"]
 
     @property
     def date_of_entry(self):
-        return self['date_of_entry']
+        return self["date_of_entry"]
 
     @property
     def word_size(self):
-        return self['word_size']
+        return self["word_size"]
 
     @property
     def extra_data(self):
-        return self['extra_data']
+        return self["extra_data"]
 
     @property
     def word_id(self):
-        return self['word_id']
+        return self["word_id"]
 
     @property
     def word_id2(self):
-        return self['word_id2']
+        return self["word_id2"]
 
     def __str__(self):
-        return "\n".join([
-            "Korean: {}".format(self.korean),
-            "English: {}".format(self.english)
-        ] + ([
-            "Hanja: {}".format(self.hanja),
-        ] if self.hanja else []) + [
-            "Synonym: {}".format(self.synonym),
-            "Part of Speech: {} ({})".format(self.part_of_speech_number,
-                                             self.part_of_speech),
-            "Submitted: {} ({})".format(self.submitter, self.date_of_entry)
-        ])
+        return "\n".join(
+            ["Korean: {}".format(self.korean), "English: {}".format(self.english)]
+            + (
+                [
+                    "Hanja: {}".format(self.hanja),
+                ]
+                if self.hanja
+                else []
+            )
+            + [
+                "Synonym: {}".format(self.synonym),
+                "Part of Speech: {} ({})".format(
+                    self.part_of_speech_number, self.part_of_speech
+                ),
+                "Submitted: {} ({})".format(self.submitter, self.date_of_entry),
+            ]
+        )
 
     def __repr__(self):
         return "{}:\n{}".format(type(self), dict(self))
