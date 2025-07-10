@@ -2,8 +2,7 @@ import sqlite3
 import atexit
 import re
 import os
-import pkg_resources
-
+import sys
 
 def _regexp(pattern, string):
     """Simple custom regex search function
@@ -67,9 +66,14 @@ class Kengdic(object):
     """
 
     try:
-        __sqlite_path = pkg_resources.resource_filename(
-            "kengdic", os.path.join("sqlite", "kengdic_2011.sqlite")
-        )
+        if sys.version_info[:2] < (3, 10):
+            import pkg_resources
+            __sqlite_path = pkg_resources.resource_filename(
+                "kengdic", os.path.join("sqlite", "kengdic_2011.sqlite")
+            )
+        else: 
+            from importlib import resources
+            __sqlite_path = resources.files("kengdic").joinpath("sqlite", "kengdic_2011.sqlite")
     except ModuleNotFoundError:
         __sqlite_path = os.path.join(
             os.path.dirname(__file__), "sqlite", "kengdic_2011.sqlite"
